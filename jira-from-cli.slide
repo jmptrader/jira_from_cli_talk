@@ -1,0 +1,195 @@
+JIRA from the CLI
+25 Jan 2016
+Tags: go golang jira go-jira go-jira-ui termui
+
+Mike Pountney
+Doofus Maximus
+mikepea@yelp.com
+https://github.com/mikepea
+@mikepea
+
+* JIRA WEB-UI SUCKS
+
+- Slow over high-latency connections :(
+- Switching to browser interface can cause loss of focus
+- Creating custom queries interfaces is laborious.
+
+* JIRA REST API IS ACE
+
+.link https://docs.atlassian.com/jira/REST/latest/
+
+- Most user-level operations are supported
+- Does highlight some of the internals of JIRA (eg Agile/Epics)
+- Move is not supported - it's complicated :(
+
+* CLI TOOLS RULE
+
+- Imagine if the primary interface to Git was a Web UI. <vomit>
+
+- Ncurses tools are great: I use tig every day
+
+- Vim navigation FTW.
+
+- Keep your focus in the terminal. Quicker.
+
+* go-jira: Overview
+
+- Discovered during Hackathon 17, when mattc and I wanted to make JIRA UIs
+- Netflix Skunkworks
+- Author (coryb) wrote Chaos Monkey!
+- .link https://github.com/Netflix-Skunkworks/go-jira
+- Like git, for JIRA.
+- On all your dev boxes (though a new version is coming...)
+
+* go-jira: Core features
+
+- Show query output
+- Show tickets
+- Edit ticket
+- Comment on tickets
+- Ticket transitions - close, in-progress, etc.
+- Watching tickets
+- Labelling tickets (on master)
+- Voting on tickets (coming soon!)
+- export-templates -- makes template customisation easier
+
+
+* go-jira: Killer features
+
+- Super useful configuration hierarchy
+- Super useful template support
+- Really responsive author (github.com/coryb)
+- Makes bulk operations in JIRA an absolute dream. Via Bash.
+
+* go-jira: Weaknesses
+
+- Still young as a library
+- Does not allow for moving tickets - the API doesn't support it.
+- Not really a replacement for the UI, more useful for scripting.
+
+* go-jira: Demo
+
+- Start from nothing
+- make .jira.d/config.yml
+
+    endpoint: https://jira.example.com
+
+- Login
+
+    jira login
+
+* go-jira: Project view
+
+    jira ls --project
+
+- or just add 'project: X' to your .jira.d/config.yml
+
+JQL support is really useful. Learn JQL, srsly.
+
+    jira ls -q 'assignee = CurrentUser() AND resolution = Unresolved'
+
+* go-jira: Ticket View
+
+    jira FAIL-660
+
+* go-jira: Create Ticket
+
+    jira create --project PINCUSHION
+
+* go-jira: Label Ticket
+
+    jira add labels {TICKET} wibble wobble
+    jira remove labels {TICKET} wobble
+    jira set labels {TICKET} wibble wobble woo
+
+* go-jira: See all the ticket data
+
+    jira -t debug OPS-8853 | jq -C '.' | less -r
+
+
+* go-jira-ui: Overview
+
+.link https://github.com/mikepea/go-jira-ui
+
+Aim is to make `tig` for JIRA: an ncurses, vim-like interface to JIRA.
+
+Secondary aim is to complement go-jira - striving for interface similarity (as per git/tig).
+
+
+* go-jira-ui: Core features
+
+- Focussed on browsing at the moment.
+- Edit/Comment work, but poorly (client exits :( ))
+- Decent vim-like movement
+- Label view.
+- Colour output via termui
+
+* go-jira-ui: Killer features
+
+- So easy to create and navigate custom queries. o/ web-ui.
+- QUICK! (well, that's the idea)
+- List Templates
+
+
+* go-jira-ui: Demo
+
+- Browsing, ticket traversal
+- Epic drilldown
+- Edit
+- Comment
+
+
+* go-jira-ui: The Future
+
+See:
+
+.link https://github.com/mikepea/go-jira-ui/issues
+
+- Input in the UI: comments
+- Regex navigation on all pages (the '/' key)
+- Probably no graphs - i haven't found a need (bar coolness factor)
+- Transition support. Sort of waiting for commenting in the UI first.
+- Sorting in Ticket List page.
+- Next + Prev tickets (hopefully with preloading!)
+
+
+* termui: Overview
+
+- Basically blessed-contrib for golang
+- Really easy to use.
+- https://github.com/gizak/termui
+- Provides diplay widgets, not really UI components (no logic)
+
+Using it really simply for go-jira-ui - really just the 'List' box.
+
+* termui: Killer features
+
+- Just beginning to tap this. OMG graphs.
+- Ease of use
+- Solid
+
+* termui: Weaknesses
+
+- I think it's going to be hard to implement input boxes :(
+
+
+* The code: go-jira
+
+Pretty straightforward:
+
+- CLI calls `Cmd*()` based on commands given: eg `jira ls` calls `CmdList()`
+- `Cmd*()` funcs are wrappers around API calls.
+- GetTemplate and RunTemplate
+- Config loading is done via main.go
+
+* The code: go-jira-ui
+
+Urrm, this is my first golang application-from-scratch.
+
+- jira-ui/main.go
+- run.go
+- ui_controls.go
+- base_page_list.go
+- ticket_show_list.go
+- utils.go
+
