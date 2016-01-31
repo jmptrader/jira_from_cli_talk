@@ -3,18 +3,17 @@ JIRA from the CLI
 Tags: go golang jira go-jira go-jira-ui termui
 
 Mike Pountney
-Doofus Maximus
 mikepea@yelp.com
 https://github.com/mikepea
 @mikepea
 
-* JIRA WEB-UI SUCKS
+* JIRA Web UI :(
 
 - Slow over high-latency connections :(
 - Switching to browser interface can cause loss of focus
-- Creating custom queries interfaces is laborious.
+- Creating custom queries via UI is laborious.
 
-* JIRA REST API IS ACE
+* JIRA REST API
 
 .link https://docs.atlassian.com/jira/REST/latest/
 
@@ -30,16 +29,12 @@ https://github.com/mikepea
 
 - Vim navigation FTW.
 
-- Keep your focus in the terminal. Quicker.
+- Keep your focus in the terminal. Less context switching
 
 * go-jira: Overview
 
-- Discovered during Hackathon 17, when mattc and I wanted to make JIRA UIs
-- Netflix Skunkworks
-- Author (coryb) wrote Chaos Monkey!
-- .link https://github.com/Netflix-Skunkworks/go-jira
 - Like git, for JIRA.
-- On all your dev boxes (though a new version is coming...)
+- .link https://github.com/Netflix-Skunkworks/go-jira
 
 * go-jira: Core features
 
@@ -53,13 +48,12 @@ https://github.com/mikepea
 - Voting on tickets (coming soon!)
 - export-templates -- makes template customisation easier
 
-
 * go-jira: Killer features
 
 - Super useful configuration hierarchy
 - Super useful template support
 - Really responsive author (github.com/coryb)
-- Makes bulk operations in JIRA an absolute dream. Via Bash.
+- Makes bulk operations in JIRA an absolute dream, via bash.
 
 * go-jira: Weaknesses
 

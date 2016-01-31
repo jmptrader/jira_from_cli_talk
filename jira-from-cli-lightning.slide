@@ -1,0 +1,150 @@
+JIRA from the CLI
+31 Jan 2016
+Tags: go golang jira go-jira go-jira-ui termui
+
+Mike Pountney
+mikepea@yelp.com
+https://github.com/mikepea
+@mikepea
+
+* JIRA Web UI :(
+
+- Slow over high-latency connections :(
+- Switching to browser interface can cause loss of focus
+- Creating custom queries via UI is laborious.
+
+* JIRA REST API FTW
+
+.link https://docs.atlassian.com/jira/REST/latest/
+
+- Most user-level operations are supported
+- Does highlight some of the internals of JIRA (eg Agile/Epics)
+- Move is not supported - it's complicated :(
+
+* CLI TOOLS RULE
+
+- Imagine if the primary interface to Git was a Web UI. <vomit>
+
+- Ncurses tools are great: I use `tig` every day
+
+- Vim navigation FTW.
+
+- Keep your focus in the terminal. Less context switching
+
+* go-jira: Overview
+
+.link https://github.com/Netflix-Skunkworks/go-jira
+
+- List tickets from query
+- Create, view, edit, comment on ticket
+- Ticket transitions - close, in-progress, etc.
+- Watching, labelling, voting
+- export-templates -- makes template customisation easier
+
+* go-jira: Killer features
+
+- Super useful configuration hierarchy
+- Super useful template support
+- Really responsive author (github.com/coryb)
+- Makes bulk operations in JIRA an absolute dream, via bash.
+
+* go-jira: Downsides
+
+- Not really a replacement for the UI, more useful for scripting.
+- Still young as a library
+- Move not implemented, API doesn't support it.
+
+* go-jira: Usage
+
+- Start from nothing
+- make .jira.d/config.yml
+
+    endpoint: https://jira.example.com
+
+- Login
+
+    jira login
+
+* go-jira: Project view
+
+    jira ls --project
+
+- or just add 'project: X' to your .jira.d/config.yml
+
+JQL support is really useful. Learn JQL, srsly.
+
+    jira ls -q 'assignee = CurrentUser() AND resolution = Unresolved'
+
+* go-jira: Ticket View
+
+    jira ISSUE-123
+
+* go-jira: Create Ticket
+
+    jira create --project MYPROJECT
+
+* go-jira: See all the ticket data
+
+    jira -t debug OPS-8853 | jq -C '.' | less -r
+
+* termui: Overview
+
+.link https://github.com/gizak/termui
+
+.image ./dashboard.gif
+
+* termui: Overview (2)
+
+.link https://github.com/gizak/termui
+
+- Basically blessed-contrib for golang: ncurses dashboards
+- Really easy to use.
+- Provides diplay widgets & events only, no UI logic
+
+* go-jira-ui: Overview
+
+.link https://github.com/mikepea/go-jira-ui
+
+- Aim is to make `tig` for JIRA: an ncurses, vim-like interface to JIRA.
+
+- Secondary aim is to complement go-jira - striving for interface similarity (like tig does for git).
+
+* go-jira-ui: Core features
+
+- Decent vim-like movement
+- Custom Queries
+- Label view.
+- Regexp searching, like less.
+- Colour output via termui
+- watch/unwatch; vote/unvote; assign/take/unassign
+- command/search history
+
+* go-jira-ui: Weaknesses
+
+- Edit works, but poorly (client exits :( )) - HALP!
+- Cut and paste bug, turns out input is hard.
+- No support yet for issue transitions (eg close, in progress)
+
+* go-jira-ui: Demo
+
+- Browsing, ticket traversal
+- Adding labels, Label view
+- Comment
+
+* go-jira-ui: The Future
+
+See:
+
+.link https://github.com/mikepea/go-jira-ui/issues
+
+- Faster! Always faster!
+- Transition support: Close, In Progress, etc.
+- Next + Prev tickets (ideally with preloading!)
+- Probably no graphs - i haven't found a need (bar coolness factor)
+- Better editing support (and contribute this to termui)
+
+* go-jira-ui: The Code
+
+- Hoping that it will be useful for other ncurses clients too. Talk to me if you have an idea.
+- Not really enough time to show :(
+
