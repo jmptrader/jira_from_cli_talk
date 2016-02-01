@@ -83,6 +83,11 @@ JQL support is really useful. Learn JQL, srsly.
 
     jira create --project MYPROJECT
 
+- Fires up the 'create' template in `$EDITOR`
+- Also:
+
+     jira edit MYPROJECT-123
+
 * go-jira: See all the ticket data
 
     jira -t debug OPS-8853 | jq -C '.' | less -r
